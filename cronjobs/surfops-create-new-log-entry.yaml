@@ -1,0 +1,41 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: surfops-create-new-log-entry
+  namespace: default
+  labels: &labels
+    app: surfops
+    component: cronjob
+    env: production
+    team: nextgen
+spec:
+  # At 20:00 on Wednesday.
+  schedule: "00 20 * * 3"
+  suspend: false
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: surfops-create-new-log-entry
+            image: registry.gitlab.com/unbabel/surfops/master:latest
+            imagePullPolicy: Always
+            args:
+              - 'python'
+              - 'manage.py'
+              - 'create-new-log-entry'
+            envFrom:
+            - configMapRef:
+                name: surfops-configmap
+            - secretRef:
+                name: surfops-secrets
+            resources:
+              limits:
+                cpu: 300m
+                memory: 1000Mi
+              requests:
+                cpu: 300m
+                memory: 1000Mi
+          restartPolicy: Never
+          imagePullSecrets:
+            - name: gitlab-container-registry

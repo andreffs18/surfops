@@ -1,0 +1,41 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: surfops-update-last-log-entry
+  namespace: default
+  labels: &labels
+    app: surfops
+    component: cronjob
+    env: production
+    team: nextgen
+spec:
+  # At 9:30 on Thursday.
+  schedule: "30 9 * * 4"
+  suspend: false
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: surfops-update-last-log-entry
+            image: registry.gitlab.com/unbabel/surfops/master:latest
+            imagePullPolicy: Always
+            args:
+              - 'python'
+              - 'manage.py'
+              - 'update-last-log-entry'
+            envFrom:
+            - configMapRef:
+                name: surfops-configmap
+            - secretRef:
+                name: surfops-secrets
+            resources:
+              limits:
+                cpu: 300m
+                memory: 1000Mi
+              requests:
+                cpu: 300m
+                memory: 1000Mi
+          restartPolicy: Never
+          imagePullSecrets:
+            - name: gitlab-container-registry

@@ -1,0 +1,41 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: surfops-generate-poll
+  namespace: default
+  labels: &labels
+    app: surfops
+    component: cronjob
+    env: production
+    team: nextgen
+spec:
+  # At 10:30 on Tuesday.
+  schedule: "30 10 * * 2"
+  suspend: false
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: surfops-generate-poll
+            image: registry.gitlab.com/unbabel/surfops/master:latest
+            imagePullPolicy: Always
+            args:
+              - 'python'
+              - 'manage.py'
+              - 'generate-poll'
+            envFrom:
+            - configMapRef:
+                name: surfops-configmap
+            - secretRef:
+                name: surfops-secrets
+            resources:
+              limits:
+                cpu: 300m
+                memory: 1000Mi
+              requests:
+                cpu: 300m
+                memory: 1000Mi
+          restartPolicy: Never
+          imagePullSecrets:
+            - name: gitlab-container-registry
