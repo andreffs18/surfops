@@ -1,7 +1,8 @@
+from surf import slack
+from cache import DummySlackCache
 from flask_script import Command, Option
 from services.create_poll_service import CreatePollService
 from services.poll_message_generator_service import PollMessageGeneratorService
-from surf import cache
 
 
 class GeneratePollCommand(Command):
@@ -17,10 +18,6 @@ class GeneratePollCommand(Command):
     ]
 
     def run(self, channel_name):
-        channel_id = cache.get_channel_id(channel_name)
-        if not channel_id:
-            raise ValueError('Slack channel "{}" not found.'.format(channel_name))
-
         poll = PollMessageGeneratorService().call()
-        CreatePollService(poll, channel_id).call()
+        CreatePollService(poll, channel_name).call()
         print('Pool "{}" created with success!'.format(poll.message))

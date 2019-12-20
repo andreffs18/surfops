@@ -1,4 +1,5 @@
 from surf import slack
+from cache import DummySlackCache
 
 
 class CreatePollService:
@@ -6,15 +7,18 @@ class CreatePollService:
 
     :param poll: PollObject that will be serialized and sent over
     :type poll: PoolObject
-    :param channel_id: Slack Channel ID to where the command "/poll" will be executed
-    :type channel_id: string
+    :param channel_name: Slack Channel name to where the command "/poll" will be executed
+    :type channel_name: string
     :returns: boolean representing if request was successful
     :rtype: bool
     """
 
-    def __init__(self, poll, channel_id):
+    def __init__(self, poll, channel_name, cache=None):
         self.poll = poll
-        self.channel_id = channel_id
+        self.cache = cache or DummySlackCache(slack)
+        self.channel_id = self.cache.get_channel_id(channel_name)
+        if not self.channel_id:
+            raise ValueError('Slack channel "{}" not found.'.format(channel_name))
 
     def call(self):
         resp = slack.chat.command(

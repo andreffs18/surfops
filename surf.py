@@ -2,11 +2,9 @@ import os
 from flask import Flask
 from flask_script import Manager
 from slacker import Slacker
-from cache import DummySlackCache
 
 manager = Manager(Flask(__name__))
 slack = Slacker(os.getenv("SLACK_API_TOKEN"))
-cache = DummySlackCache(slack)
 
 if __name__ == "__main__":
     from commands.generate_poll import GeneratePollCommand

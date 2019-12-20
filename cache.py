@@ -26,7 +26,13 @@ class DummySlackCache:
         return users
 
     def get_channel_id(self, channel_name):
-        return self.CHANNELS[channel_name]
+        try:
+            return self.CHANNELS[channel_name]
+        except KeyError as e:
+            print("> Error: {}. Available channels: {}".format(str(e), self.CHANNELS))
 
     def get_user_name(self, user_id):
-        return self.USERS[user_id]
+        try:
+            return self.USERS[user_id]
+        except KeyError as e:
+            print("> Error: {}. Available users: {}".format(str(e), self.USERS))

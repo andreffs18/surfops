@@ -1,6 +1,5 @@
 import os
 import requests
-from surf import cache
 from flask_script import Command, Option
 from services.get_channel_poll_history_service import GetChannelPollHistory
 
@@ -23,11 +22,7 @@ class CreateNewLogEntryCommand(Command):
     ]
 
     def run(self, channel_name, hook):
-        channel_id = cache.get_channel_id(channel_name)
-        if not channel_id:
-            raise ValueError('Slack channel "{}" not found.'.format(channel_name))
-
-        messages = GetChannelPollHistory(channel_id).call()
+        messages = GetChannelPollHistory(channel_name).call()
         if not messages:
             raise ValueError('No poll messages found on slack channel "{}".'.format(channel_name))
 

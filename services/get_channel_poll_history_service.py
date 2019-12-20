@@ -1,20 +1,24 @@
 import re
-from surf import slack, cache
+from surf import slack
 from datetime import datetime
+from cache import DummySlackCache
 from models.message import MessageObject
 
 
 class GetChannelPollHistory:
-    """Returns last poll messages from given Slack Channel ID and parses them into MessageObjects
+    """Returns last poll messages from given Slack Channel name and parses them into MessageObjects
 
-    :param channel_id: Slack Channel ID
-    :type channel_id: string
+    :param channel_name: Slack Channel name, without the "@"
+    :type channel_name: string
     :returns: list of MessageObjects that represent "/poll" messages on Slack.
     :rtype: list
     """
 
-    def __init__(self, channel_id):
-        self.channel_id = channel_id
+    def __init__(self, channel_name, cache=None):
+        self.cache = cache or DummySlackCache(slack)
+        self.channel_id = self.cache.get_channel_id(channel_name)
+        if not self.channel_id:
+            raise ValueError('Slack channel "{}" not found.'.format(channel_name))
 
     def call(self):
         history = slack.channels.history(channel=self.channel_id)
@@ -36,10 +40,9 @@ class GetChannelPollHistory:
         except Exception:
             return False
 
-    @staticmethod
-    def _get_usernames(message):
+    def _get_usernames(self, message):
         users = re.findall(r"<@(.*?)>", message, re.DOTALL)
-        return list(map(lambda user_id: cache.get_user_name(user_id), users))
+        return list(map(lambda user_id: self.cache.get_user_name(user_id), users))
 
     def _format_message(self, message):
         return MessageObject(
