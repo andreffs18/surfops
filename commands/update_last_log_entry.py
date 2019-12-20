@@ -35,4 +35,8 @@ class UpdateLastLogEntryCommand(Command):
         response = requests.post(hook, json=payload)
         if not response.ok:
             raise response.raise_for_status()
-        print('New Entry was added to spreadsheet with date "{}"!'.format(payload.get("date")))
+        print(
+            'New Entry was added to spreadsheet with date "{}"!'.format(
+                payload.get("date")
+            )
+        )

@@ -47,10 +47,12 @@ class GetChannelPollHistory:
     def _format_message(self, message):
         return MessageObject(
             title=message["text"],
-            link=slack.chat.get_permalink(self.channel_id, message["ts"]).body["permalink"],
+            link=slack.chat.get_permalink(self.channel_id, message["ts"]).body[
+                "permalink"
+            ],
             timestamp=message["ts"],
             date=str(datetime.fromtimestamp(float(message["ts"])).date()),
             yes=",".join(self._get_usernames(message["blocks"][1]["text"]["text"])),
             no=",".join(self._get_usernames(message["blocks"][2]["text"]["text"])),
-            count=len(self._get_usernames(message["blocks"][1]["text"]["text"]))
+            count=len(self._get_usernames(message["blocks"][1]["text"]["text"])),
         )

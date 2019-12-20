@@ -24,10 +24,16 @@ class CreateNewLogEntryCommand(Command):
     def run(self, channel_name, hook):
         messages = GetChannelPollHistory(channel_name).call()
         if not messages:
-            raise ValueError('No poll messages found on slack channel "{}".'.format(channel_name))
+            raise ValueError(
+                'No poll messages found on slack channel "{}".'.format(channel_name)
+            )
 
         payload = messages[0].to_json()
         response = requests.post(hook, json=payload)
         if not response.ok:
             raise response.raise_for_status()
-        print('New Entry was added to spreadsheet with date "{}"!'.format(payload.get("date")))
+        print(
+            'New Entry was added to spreadsheet with date "{}"!'.format(
+                payload.get("date")
+            )
+        )

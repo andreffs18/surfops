@@ -4,6 +4,7 @@ class DummySlackCache:
     :param slack: Slacker wrapper
     :type slack: Slacker object instance
     """
+
     CHANNELS = {}
     USERS = {}
 
@@ -14,7 +15,9 @@ class DummySlackCache:
     @staticmethod
     def _set_channels_cache(slack):
         r = slack.channels.list(exclude_archived=True)
-        channels = dict(map(lambda channel: (channel["name"], channel["id"]), r.body["channels"]))
+        channels = dict(
+            map(lambda channel: (channel["name"], channel["id"]), r.body["channels"])
+        )
         print("> Got {} channels".format(len(channels)))
         return channels
 
