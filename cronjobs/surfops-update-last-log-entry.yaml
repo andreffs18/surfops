@@ -18,15 +18,15 @@ spec:
         spec:
           containers:
           - name: surfops-update-last-log-entry
-            image: registry.gitlab.com/unbabel/surfops/master:latest
+            image: andreffs/surfops:latest
             imagePullPolicy: Always
             args:
               - 'python'
-              - 'manage.py'
+              - 'surf.py'
               - 'update-last-log-entry'
+              - '--channel'
+              - 'general'
             envFrom:
-            - configMapRef:
-                name: surfops-configmap
             - secretRef:
                 name: surfops-secrets
             resources:
@@ -37,5 +37,3 @@ spec:
                 cpu: 300m
                 memory: 1000Mi
           restartPolicy: Never
-          imagePullSecrets:
-            - name: gitlab-container-registry
