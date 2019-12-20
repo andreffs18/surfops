@@ -6,8 +6,6 @@ metadata:
   labels: &labels
     app: surfops
     component: cronjob
-    env: production
-    team: nextgen
 spec:
   # At 9:30 on Thursday.
   schedule: "30 9 * * 4"
@@ -29,11 +27,4 @@ spec:
             envFrom:
             - secretRef:
                 name: surfops-secrets
-            resources:
-              limits:
-                cpu: 300m
-                memory: 1000Mi
-              requests:
-                cpu: 300m
-                memory: 1000Mi
           restartPolicy: Never
