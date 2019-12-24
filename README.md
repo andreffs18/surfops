@@ -10,15 +10,16 @@ Simply put, this project gathers all the commands that I use to run all those ta
   * Every week on Tuesday, we create a slack `/poll` so people can sign up for this week's surf.
 * 📝 **Keep track of who goes to surf and who falls asleep**
   * Every year we organize the "Surf Retreat". The top 10 surfers (that go regularly to surf) are automatically signed up! This is why we keep track of who goes to surf.
-* 🥇 **Generate leaderboard** 
+* 🥇 `WIP` **Generate leaderboard** 
   * Consists of the ranking of how many time did someone go to surf over the last year. 
+* 🏥 `WIP` **Healthcheck** 
+  * Report on all configurations to healthcheck functionality. 
 
 
 <!--### Lifecycle
 ![Command #1]()
 ![Command #2]()
 ![Command #3]()-->
-
 
 ## Usage
 
@@ -36,6 +37,7 @@ Now that you already have the image locally, just run the command that you need:
 ```bash
 $ docker run -it --rm --name surfops --env-file .env andreffs/surfops python surf.py <COMMAND>
 ```
+
 
 ### Configuration 
 
