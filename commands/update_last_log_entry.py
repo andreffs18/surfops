@@ -3,7 +3,7 @@ import requests
 from surf import slack
 from cache import DummySlackCache
 from flask_script import Command, Option
-from services.get_channel_poll_history_service import GetChannelPollHistory
+from services.get_channel_poll_history import GetChannelPollHistoryService
 
 
 class UpdateLastLogEntryCommand(Command):
@@ -25,7 +25,7 @@ class UpdateLastLogEntryCommand(Command):
     ]
 
     def run(self, channel_name, hook):
-        messages = GetChannelPollHistory(channel_name).call()
+        messages = GetChannelPollHistoryService(channel_name).call()
         if not messages:
             raise ValueError(
                 'No poll messages found on slack channel "{}".'.format(channel_name)

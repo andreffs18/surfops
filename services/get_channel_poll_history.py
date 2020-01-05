@@ -5,7 +5,7 @@ from cache import DummySlackCache
 from models.message import MessageObject
 
 
-class GetChannelPollHistory:
+class GetChannelPollHistoryService:
     """Returns last poll messages from given Slack Channel name and parses them into MessageObjects
 
     :param channel_name: Slack Channel name, without the "@"

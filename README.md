@@ -16,28 +16,27 @@ Simply put, this project gathers all the commands that I use to run all those ta
   * Report on all configurations to healthcheck functionality. 
 
 
-<!--### Lifecycle
-![Command #1]()
-![Command #2]()
-![Command #3]()-->
+> To understand more about each command and how they work, check the [/docs](/docs) folder for detailed information.
 
 ## Usage
 
-This project runs on `python3.6`. You can run it either locally or using Docker. Below are instructions on how to run it using Docker.
+This project runs on `python3.6` and you can run it using Docker. There is a simple **Makefile** that contains all commands to run this project locally.
 
 > Note that you don't have to clone this repo. Pulling the latest image of `andreffs/surfops` would be enough.
 
+
+Lets start by pulling the latest image of this repo:
 ```bash
-# Pull image
-$ docker pull andreffs/surfops
+# Pull image to local registry
+$ make pull
 ```
 
-Now that you already have the image locally, just run the command that you need:
+Now that you already have the image locally, just open a shell into the docker container and run the command that you need:
 
 ```bash
-$ docker run -it --rm --name surfops --env-file .env andreffs/surfops python surf.py <COMMAND>
+# Start python shell on container
+$ make shell
 ```
-
 
 ### Configuration 
 
@@ -46,14 +45,13 @@ Only 3 environments variables are required to run all commands, which are:
 | Variable | Description |
 | ----- | ----- |  
 | `SLACK_API_TOKEN=` | This is what allows your script to run the `/poll` command on any particular channel |
-| `ZAPIER_CREATE_LOG_ENTRY_HOOK=` | Webhook for Zapier "Create new entry" on the "Surf History" spreadsheet | 
-| `ZAPIER_UPDATE_LOG_ENTRY_HOOK=` | Webhook for Zapier "Update last entry" on the "Surf History" spreadsheet | 
+| `ZAPIER_CREATE_LOG_ENTRY_HOOK=` | Web hook for Zapier "Create new entry" on the "Surf History" spreadsheet | 
+| `ZAPIER_UPDATE_LOG_ENTRY_HOOK=` | Web hook for Zapier "Update last entry" on the "Surf History" spreadsheet | 
 
 
-You need to create a local `.env` file, with those secrets inside, for the project to work
+You need to create a local `.env` file, with those secrets inside, for the project to work.
 
-
-### Cronjobs
+## Cronjobs
 
 The cronjobs under `~/surfops/cronjobs/` are simply running the following python command:
 
@@ -64,7 +62,7 @@ $ python surf.py <COMMAND> <ARGUMENTS>
 
 #### K8S Cluster.
 
-Of course that you don't need a kubernetes cluster to run these commands, but since we have one at our displosal, why not 😁.
+Of course that you don't need a kubernetes cluster to run these commands, but since we have one at our disposal, why not 😁.
 
 There is one cronjob for each command. The sequence of cronjobs translates to the workflow that we manually do every week.
 
@@ -91,3 +89,5 @@ metadata:
 type: Opaque
 EOF
 ````
+
+Just need to replace with the correct environments.

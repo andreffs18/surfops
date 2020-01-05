@@ -1,8 +1,8 @@
 from surf import slack
 from cache import DummySlackCache
 from flask_script import Command, Option
-from services.create_poll_service import CreatePollService
-from services.poll_message_generator_service import PollMessageGeneratorService
+from services.create_poll import CreatePollService
+from services.poll_message_generator import PollMessageGeneratorService
 
 
 class GeneratePollCommand(Command):
