@@ -23,7 +23,7 @@ spec:
               - 'surf.py'
               - 'generate-poll'
               - '--channel'
-              - 'general'
+              - 'surfing'
             envFrom:
             - secretRef:
                 name: surfops-secrets

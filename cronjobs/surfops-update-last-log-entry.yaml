@@ -23,7 +23,7 @@ spec:
               - 'surf.py'
               - 'update-last-log-entry'
               - '--channel'
-              - 'general'
+              - 'surfing'
             envFrom:
             - secretRef:
                 name: surfops-secrets
