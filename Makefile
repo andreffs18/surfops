@@ -1,4 +1,4 @@
-.PHONY: pull build run shell
+.PHONY: build push pull run shell
 SHELL := /bin/bash
 
 build:
