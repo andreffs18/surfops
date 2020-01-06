@@ -10,7 +10,7 @@ class PrettyPrintLeaderboardService:
     :rtype: dict
     """
 
-    def __init__(self, leaderboard, limit=16, top=-1):
+    def __init__(self, leaderboard, limit=16, top=25):
         self.leaderboard = leaderboard
         self.limit = limit
         self.top = top
