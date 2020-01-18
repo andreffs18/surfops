@@ -13,5 +13,3 @@ RUN pip install pipenv
 RUN pip --version
 RUN pipenv --version
 RUN pipenv install --skip-lock --system --deploy
-
-
