@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask_script import Command, Option
 from services.get_surf_history_spreadsheet import GetSurfHistorySpreadsheetService
 from services.count_surf_attendance import CountSurfAttendanceService
@@ -35,11 +36,29 @@ class LeaderboardCommand(Command):
             type=int,
             help="Limit leaderboard by \"top\" number.",
             dest="top",
-        )
+        ),
+        Option(
+            "-s",
+            "--start-date",
+            required=False,
+            default=datetime.min,
+            dest="start_date",
+            type=lambda d: datetime.strptime(d, "%Y-%m-%d"),
+            help="From where should we start counting for the leaderboard. Format: YYYY-MM-DD. Time will be set to 00:00 utc",
+        ),
+        Option(
+            "-e",
+            "--end-date",
+            required=False,
+            default=datetime.max,
+            dest="end_date",
+            type=lambda d: datetime.strptime(d, "%Y-%m-%d"),
+            help="From where should we stop counting for the leaderboard. Format: YYYY-MM-DD. Time will be set to 00:00 utc",
+        ),
     ]
 
-    def run(self, filepath, pretty_print, limit, top):
-        spreadsheet = GetSurfHistorySpreadsheetService(filepath).call()
+    def run(self, filepath, pretty_print, limit, top, start_date, end_date):
+        spreadsheet = GetSurfHistorySpreadsheetService(filepath, start_date, end_date).call()
         leaderboard = CountSurfAttendanceService(spreadsheet).call()
 
         if pretty_print:
