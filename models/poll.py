@@ -6,3 +6,8 @@ class PollObject:
         self.message = message
         self.yes = yes
         self.no = no
+
+    @property
+    def text(self):
+        """Return text of /poll command"""
+        return '"{}" "{}" "{}"'.format(self.message, self.yes, self.no)

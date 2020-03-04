@@ -9,8 +9,8 @@ class CreatePollService:
     :type poll: PoolObject
     :param channel_name: Slack Channel name to where the command "/poll" will be executed
     :type channel_name: string
-    :returns: boolean representing if request was successful
-    :rtype: bool
+    :returns: tuple containing boolean representing if request was successful and response object
+    :rtype: tuple
     """
 
     def __init__(self, poll, channel_name, cache=None):
@@ -24,8 +24,7 @@ class CreatePollService:
         resp = slack.chat.command(
             channel=self.channel_id,
             command="/poll",
-            text='"{}" "{}" "{}"'.format(
-                self.poll.message, self.poll.yes, self.poll.no
-            ),
+            text=self.poll.text,
         )
-        return resp.error is None
+        success = resp.error is None
+        return success, resp

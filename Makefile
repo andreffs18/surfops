@@ -1,4 +1,4 @@
-.PHONY: build push pull run shell
+.PHONY: build push pull run shell test
 SHELL := /bin/bash
 
 build:
@@ -13,5 +13,9 @@ pull:
 shell:
 	docker run -it --rm --name surfops -v $(shell pwd):/surfops --env-file .env andreffs/surfops /bin/sh
 
+test:
+	docker run -it --rm --name surfops -v $(shell pwd):/surfops andreffs/surfops python -m unittest
+
 run: shell
 	pipenv install && pipenv shell
+
